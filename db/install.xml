@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="mod/teletask/db" VERSION="20150903" COMMENT="XMLDB file for Moodle mod/teletask"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="teletask" COMMENT="contains a lecture element">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="300" NOTNULL="false" SEQUENCE="false" COMMENT="lecture name"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="description of the lecture"/>
+        <FIELD NAME="speaker" TYPE="char" LENGTH="300" NOTNULL="false" SEQUENCE="false" COMMENT="speaker of this lecture"/>
+        <FIELD NAME="date" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="date of the recording"/>
+        <FIELD NAME="video_url_speaker" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="url to speaker video"/>
+        <FIELD NAME="video_url_desktop" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="url to video desktop"/>
+        <FIELD NAME="grade" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+		<FIELD NAME="intro" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="introformat" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="intro text field format"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="teletask_sections" COMMENT="video_sections">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="video_id" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="corresponding video"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="300" NOTNULL="false" SEQUENCE="false" COMMENT="name of the section"/>
+        <FIELD NAME="time" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="section start time"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="video_index" UNIQUE="false" FIELDS="video_id" COMMENT="index of the video relation"/>
+        <INDEX NAME="time_index" UNIQUE="false" FIELDS="time" COMMENT="index to order entries"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="teletask_slides" COMMENT="contain slide information">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="video_id" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="relation to videos"/>
+        <FIELD NAME="time" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="starttime of this slide"/>
+        <FIELD NAME="image" TYPE="char" LENGTH="300" NOTNULL="false" SEQUENCE="false" COMMENT="Path to the slide preview image"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="video_index" UNIQUE="false" FIELDS="video_id" COMMENT="index of video_ids"/>
+        <INDEX NAME="time_index" UNIQUE="false" FIELDS="time" COMMENT="Index of the time field"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="teletask_quiz" COMMENT="Table for quiz questions">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="video_id" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Relation to the teletask video"/>
+        <FIELD NAME="question" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="type" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false" COMMENT="type of the question (single, multi, text)"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="question description"/>
+        <FIELD NAME="time" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="start time in seconds of the question"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="video_index" UNIQUE="false" FIELDS="video_id" COMMENT="Index to the video_ids"/>
+        <INDEX NAME="time_index" UNIQUE="false" FIELDS="time" COMMENT="index of the time"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="teletask_quiz_possibleanswer" COMMENT="answers which are possible for a question">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="question_id" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Relation to question"/>
+        <FIELD NAME="answer" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="one possible answer"/>
+        <FIELD NAME="is_right" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="is answer right? 0 = false, 1 = right"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="question_index" UNIQUE="false" FIELDS="question_id" COMMENT="index to the qestion relation"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="teletask_quiz_user_answer" COMMENT="answers of the user">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="question_id" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Relation the answer with the question"/>
+        <FIELD NAME="user_id" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Relation to the user"/>
+        <FIELD NAME="correct" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="is the answer complete correct"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="teletask_quiz_user_givanswer" COMMENT="Selected answers of a user">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="answer_id" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="relation to a user answer"/>
+        <FIELD NAME="answer" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="one of the selected answer"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="answer_index" UNIQUE="false" FIELDS="answer_id" COMMENT="indexto the relation of the answers"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
