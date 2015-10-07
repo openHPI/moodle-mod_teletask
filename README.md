@@ -12,3 +12,6 @@ To install the lastest version and if you want to develop new features you can i
 git clone git://github.com/openHPI/moodle-mod_teletask.git teletask
 
 To ensure that you use the latest version run git pull periodically to update the module.
+
+## License
+The teletask moodle plugin is licensed under GNU GPL v3  http://www.gnu.org/copyleft/gpl.html
