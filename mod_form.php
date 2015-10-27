@@ -81,9 +81,11 @@ class mod_teletask_mod_form extends moodleform_mod {
                 get_string('addvideosection', 'teletask').'</a></p><div id="video_sections">');
 
         // Get Sections.
-        $teletasksections = $DB->get_records_sql('SELECT * FROM {teletask_sections} '.
-                'WHERE video_id = ? ORDER BY time',
-                array($this->current->id));
+        if (empty($this->current->id)) {
+            $teletasksections = array();
+        } else {
+            $teletasksections = $DB->get_records('teletask_sections', array('video_id' => $this->current->id), 'time');
+        }
 
         foreach ($teletasksections as $section) {
             $mform->addElement('html',
