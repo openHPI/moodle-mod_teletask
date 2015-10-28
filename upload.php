@@ -71,6 +71,10 @@ if (isset($_REQUEST["name"])) {
     $filename = uniqid("file_");
 }
 
+// normalize file name to avoid directory traversal attacks
+// always strip any paths
+$filename = basename($filename);
+
 $filepath = $targetdir . DIRECTORY_SEPARATOR . $filename;
 
 // Chunking might be enabled.
