@@ -26,6 +26,9 @@
 require_once($CFG->dirroot . '/mod/teletask/backup/moodle2/backup_teletask_stepslib.php'); // Because it exists (must).
 require_once($CFG->dirroot . '/mod/teletask/backup/moodle2/backup_teletask_settingslib.php'); // Because it exists (optional).
 
+/**
+ * Provides all the settings and steps to perform one complete backup of the activity
+ */
 class backup_teletask_activity_task extends backup_activity_task {
 
     /**

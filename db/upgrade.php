@@ -44,6 +44,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * DB tasks for update from one activity version to another
+ */
 function xmldb_teletask_upgrade($oldversion) {
     global $CFG, $DB;
 

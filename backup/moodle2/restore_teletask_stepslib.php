@@ -24,8 +24,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+/**
+ * Structure step to restore one teletask activity
+ */
 class restore_teletask_activity_structure_step extends restore_activity_structure_step {
 
+    /**
+     * Function describes the structure for the restore
+     */
     protected function define_structure() {
 
         $paths = array();
@@ -49,6 +55,9 @@ class restore_teletask_activity_structure_step extends restore_activity_structur
         return $this->prepare_activity_structure($paths);
     }
 
+    /**
+     * Process for teletask data structure restore 
+     */
     protected function process_teletask($data) {
         global $DB;
 
@@ -65,6 +74,9 @@ class restore_teletask_activity_structure_step extends restore_activity_structur
         $this->apply_activity_instance($newitemid);
     }
 
+    /**
+     * Process for teletask section data structure restore
+     */
     protected function process_teletask_sections($data) {
         global $DB;
 
@@ -77,6 +89,9 @@ class restore_teletask_activity_structure_step extends restore_activity_structur
         $this->set_mapping('teletask_sections', $oldid, $newitemid);
     }
 
+    /**
+     * Process for teletask slides data structure restore
+     */
     protected function process_teletask_slides($data) {
         global $DB;
 
@@ -89,6 +104,9 @@ class restore_teletask_activity_structure_step extends restore_activity_structur
         $this->set_mapping('teletask_slides', $oldid, $newitemid);
     }
 
+    /**
+     * Process for teletask quiz data structure restore
+     */
     protected function process_teletask_quiz($data) {
         global $DB;
 
@@ -101,6 +119,9 @@ class restore_teletask_activity_structure_step extends restore_activity_structur
         $this->set_mapping('teletask_quiz', $oldid, $newitemid);
     }
 
+    /**
+     * Process for teletask quiz possible answer structure restore
+     */
     protected function process_teletask_quiz_possibleanswer($data) {
         global $DB;
 
@@ -113,6 +134,9 @@ class restore_teletask_activity_structure_step extends restore_activity_structur
         $this->set_mapping('teletask_quiz_possibleanswer', $oldid, $newitemid);
     }
 
+    /**
+     * Process for teletask quiz user answer data structure restore
+     */
     protected function process_teletask_quiz_user_answer($data) {
         global $DB;
 
@@ -125,6 +149,9 @@ class restore_teletask_activity_structure_step extends restore_activity_structur
         $this->set_mapping('teletask_quiz_user_answer', $oldid, $newitemid);
     }
 
+    /**
+     * Process for teletask quiz uder given answer data structure restore
+     */
     protected function process_teletask_quiz_user_givanswer($data) {
         global $DB;
 
@@ -137,6 +164,9 @@ class restore_teletask_activity_structure_step extends restore_activity_structur
         $this->set_mapping('teletask_quiz_user_givanswer', $oldid, $newitemid);
     }
 
+    /**
+     * Restore step after step execution
+     */
     protected function after_execute() {
         // Add teletask related files, no need to match by itemname (just internally handled context).
         $this->add_related_files('mod_teletask', 'intro', null);

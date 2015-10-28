@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Adds an teletask instance
+ * Adds a teletask instance
  *
  * This is done by calling the add_instance() method of the assignment type class
  * @param stdClass $data
@@ -70,6 +70,13 @@ function teletask_add_instance($teletask) {
     return $id;
 }
 
+/**
+ * Update a teletask instance
+ *
+ * This is done by calling the update_instance() method of the assignment type class
+ * @param stdClass $teletask Object of teletask activity
+ * @return int The instance id of the new assignment
+ */
 function teletask_update_instance($teletask) {
     global $DB;
 
@@ -110,6 +117,13 @@ function teletask_update_instance($teletask) {
 
 }
 
+/**
+ * Delete a teletask instance
+ *
+ * This is done by calling the delete_instance() method of the assignment type class
+ * @param int $id id of the teletask activity that is going to be deleted
+ * @return boolean Returns if the action was successful or not
+ */
 function teletask_delete_instance($id) {
     global $DB;
 
@@ -129,13 +143,17 @@ function teletask_delete_instance($id) {
 }
 
 /**
+ * Retunring the features of the teletask activity
+ * 
+ * This is done by calling the supports() method of the assignment type class
  * @param string $feature FEATURE_xx constant for requested feature
  * @return mixed True if module supports feature, null if doesn't know
  */
 function teletask_supports($feature) {
     switch($feature) {
-        case FEATURE_BACKUP_MOODLE2:          return true;
-
-        default: return null;
+        case FEATURE_BACKUP_MOODLE2:
+            return true;
+        default:
+            return null;
     }
 }

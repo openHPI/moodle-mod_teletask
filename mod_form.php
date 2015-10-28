@@ -33,6 +33,9 @@ $introformat = new stdClass();
 require_once($CFG->dirroot.'/course/moodleform_mod.php');
 require_once($CFG->dirroot.'/mod/teletask/lib.php');
 
+/**
+ * Provides the form to perform an insert/update teletask activity action
+ */
 class mod_teletask_mod_form extends moodleform_mod {
 
     public function definition() {

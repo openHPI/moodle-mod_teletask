@@ -24,12 +24,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+/**
+ * Define the complete teletask structure for backup, with file and id annotations
+ */
 class backup_teletask_activity_structure_step extends backup_activity_structure_step {
 
     /**
      * Function describes the structure for the backup
      */
-    
     protected function define_structure() {
 
         // To know if we are including userinfo.

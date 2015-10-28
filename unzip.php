@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * The functionality of this file handles the unzipping process of teletask recording files
+ * 
  * @package   mod_teletask
  * @copyright 2015 Martin Malchow - Hasso Plattner Institute (HPI) {http://www.hpi.de}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
