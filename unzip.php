@@ -101,6 +101,11 @@ if (isset($_POST['fn']) && isset($_POST['action']) && is_file('uploads/'.$_POST[
                 }
             }
         }
+		// Remove uploaded file if nothing is found to unpack
+		if(count($outputarray) == 0)
+		{
+		    unlink('uploads/'.$_POST['fn']);
+		}
         echo json_encode($outputarray);
     } else if ($_POST['action'] == 'remove') {
         if (unlink('uploads/'.$_POST['fn'])) {
