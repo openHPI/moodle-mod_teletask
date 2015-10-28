@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * upload.php
+ * upload.php file to handle chunked upload
  *
  * Copyright 2013, Moxiecode Systems AB (Original Author)
  * Released under GPL License.
