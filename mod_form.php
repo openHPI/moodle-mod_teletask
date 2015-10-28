@@ -39,8 +39,8 @@ class mod_teletask_mod_form extends moodleform_mod {
         global $CFG, $DB, $OUTPUT, $PAGE;
 
         $PAGE->requires->jquery();
-        $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/teletask/upload/plupload.full.min.js') );
-        $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/teletask/upload/uuid.js') );
+        $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/teletask/vendor/plupload/plupload.full.min.js') );
+        $PAGE->requires->js( new moodle_url($CFG->wwwroot . '/mod/teletask/vendor/uuid-js/uuid.js') );
         $PAGE->requires->js_init_call('M.mod_teletask.init');
 
         $mform =& $this->_form;

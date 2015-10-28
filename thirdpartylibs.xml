@@ -1,0 +1,17 @@
+﻿<?xml version="1.0"?>
+<libraries>
+    <library>
+        <location>vendor/plupload/</location>
+        <name>Plupload</name>
+        <version>2.1.7</version>
+        <license>GPL</license>
+        <licenseversion>2</licenseversion>
+    </library>
+    <library>
+        <location>vendor/uuid-js/</location>
+        <name>uuid-js</name>
+        <version>0.7.5</version>
+        <license>Apache</license>
+        <licenseversion>2.0</licenseversion>
+    </library>
+</libraries>
