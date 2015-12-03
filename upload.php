@@ -29,114 +29,134 @@
  * 
  */
 
+require_once('../../config.php');
 
-// Make sure file is not cached (as it happens for example on iOS devices).
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-header("Cache-Control: no-store, no-cache, must-revalidate");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
+$id = required_param('id', PARAM_INT);
 
-/*
-// Support CORS
-header("Access-Control-Allow-Origin: *");
-// other CORS headers if any...
-if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-	exit; // finish preflight CORS requests here
+if (!$cm = get_coursemodule_from_id('teletask', $id)) {
+    print_error(get_string('incorrectcoursemoduleid', 'teletask'));
 }
-*/
-
-// 5 minutes execution time.
-@set_time_limit(5 * 60);
-
-// Uncomment this one to fake upload time.
-
-// Settings.
-$targetdir = 'uploads';
-$cleanuptargetdir = true; // Remove old files.
-$maxfileage = 5 * 3600; // Temp file age in seconds.
-
-
-// Create target dir.
-if (!file_exists($targetdir)) {
-    @mkdir($targetdir);
+if (!$course = $DB->get_record('course', array('id' => $cm->course))) {
+    print_error(get_string('misconfigured', 'teletask'));
 }
 
-// Get a file name.
-if (isset($_REQUEST["name"])) {
-    $filename = $_REQUEST["name"];
-} else if (!empty($_FILES)) {
-    $filename = $_FILES["file"]["name"];
-} else {
-    $filename = uniqid("file_");
-}
+require_course_login($course, false, $cm);
 
-// normalize file name to avoid directory traversal attacks
-// always strip any paths
-$filename = basename($filename);
-
-$filepath = $targetdir . DIRECTORY_SEPARATOR . $filename;
-
-// Chunking might be enabled.
-$chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
-$chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 0;
+$context = context_module::instance($cm->id);
+if(has_capability('mod/teletask:addinstance', $context))
+{
 
 
-// Remove old temp files.
-if ($cleanuptargetdir) {
-    if (!is_dir($targetdir) || !$dir = opendir($targetdir)) {
-        die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Failed to open temp directory."}, "id" : "id"}');
+    // Make sure file is not cached (as it happens for example on iOS devices).
+    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+    header("Cache-Control: no-store, no-cache, must-revalidate");
+    header("Cache-Control: post-check=0, pre-check=0", false);
+    header("Pragma: no-cache");
+    
+    /*
+    // Support CORS
+    header("Access-Control-Allow-Origin: *");
+    // other CORS headers if any...
+    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    	exit; // finish preflight CORS requests here
     }
-
-    while (($file = readdir($dir)) !== false) {
-        $tmpfilepath = $targetdir . DIRECTORY_SEPARATOR . $file;
-
-        // If temp file is current file proceed to the next.
-        if ($tmpfilepath == "{$filepath}.part") {
-            continue;
+    */
+    
+    // 5 minutes execution time.
+    @set_time_limit(5 * 60);
+    
+    // Uncomment this one to fake upload time.
+    
+    // Settings.
+    $targetdir = 'uploads';
+    $cleanuptargetdir = true; // Remove old files.
+    $maxfileage = 5 * 3600; // Temp file age in seconds.
+    
+    
+    // Create target dir.
+    if (!file_exists($targetdir)) {
+        @mkdir($targetdir);
+    }
+    
+    // Get a file name.
+    if (isset($_REQUEST["name"])) {
+        $filename = $_REQUEST["name"];
+    } else if (!empty($_FILES)) {
+        $filename = $_FILES["file"]["name"];
+    } else {
+        $filename = uniqid("file_");
+    }
+    
+    // normalize file name to avoid directory traversal attacks
+    // always strip any paths
+    $filename = basename($filename);
+    
+    $filepath = $targetdir . DIRECTORY_SEPARATOR . $filename;
+    
+    // Chunking might be enabled.
+    $chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
+    $chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 0;
+    
+    
+    // Remove old temp files.
+    if ($cleanuptargetdir) {
+        if (!is_dir($targetdir) || !$dir = opendir($targetdir)) {
+            die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Failed to open temp directory."}, "id" : "id"}');
         }
-
-        // Remove temp file if it is older than the max age and is not the current file.
-        if (preg_match('/\.part$/', $file) && (filemtime($tmpfilepath) < time() - $maxfileage)) {
-            @unlink($tmpfilepath);
+    
+        while (($file = readdir($dir)) !== false) {
+            $tmpfilepath = $targetdir . DIRECTORY_SEPARATOR . $file;
+    
+            // If temp file is current file proceed to the next.
+            if ($tmpfilepath == "{$filepath}.part") {
+                continue;
+            }
+    
+            // Remove temp file if it is older than the max age and is not the current file.
+            if (preg_match('/\.part$/', $file) && (filemtime($tmpfilepath) < time() - $maxfileage)) {
+                @unlink($tmpfilepath);
+            }
+        }
+        closedir($dir);
+    }
+    
+    
+    // Open temp file.
+    if (!$out = @fopen("{$filepath}.part", $chunks ? "ab" : "wb")) {
+        die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
+    }
+    
+    if (!empty($_FILES)) {
+        if ($_FILES["file"]["error"] || !is_uploaded_file($_FILES["file"]["tmp_name"])) {
+            die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
+        }
+    
+        // Read binary input stream and append it to temp file.
+        if (!$in = @fopen($_FILES["file"]["tmp_name"], "rb")) {
+            die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+        }
+    } else {
+        if (!$in = @fopen("php://input", "rb")) {
+            die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
         }
     }
-    closedir($dir);
-}
-
-
-// Open temp file.
-if (!$out = @fopen("{$filepath}.part", $chunks ? "ab" : "wb")) {
-    die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
-}
-
-if (!empty($_FILES)) {
-    if ($_FILES["file"]["error"] || !is_uploaded_file($_FILES["file"]["tmp_name"])) {
-        die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
+    
+    while ($buff = fread($in, 4096)) {
+        fwrite($out, $buff);
     }
-
-    // Read binary input stream and append it to temp file.
-    if (!$in = @fopen($_FILES["file"]["tmp_name"], "rb")) {
-        die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+    
+    @fclose($out);
+    @fclose($in);
+    
+    // Check if file has been uploaded.
+    if (!$chunks || $chunk == $chunks - 1) {
+        // Strip the temp .part suffix off.
+        rename("{$filepath}.part", $filepath);
     }
+    
+    // Return Success JSON-RPC response.
+    die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
 } else {
-    if (!$in = @fopen("php://input", "rb")) {
-        die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
-    }
+    print_error(get_string('misconfigured', 'teletask'));
 }
-
-while ($buff = fread($in, 4096)) {
-    fwrite($out, $buff);
-}
-
-@fclose($out);
-@fclose($in);
-
-// Check if file has been uploaded.
-if (!$chunks || $chunk == $chunks - 1) {
-    // Strip the temp .part suffix off.
-    rename("{$filepath}.part", $filepath);
-}
-
-// Return Success JSON-RPC response.
-die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');

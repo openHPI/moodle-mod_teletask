@@ -44,7 +44,7 @@ class mod_teletask_mod_form extends moodleform_mod {
         $PAGE->requires->jquery();
         $PAGE->requires->js('/mod/teletask/vendor/plupload/plupload.full.min.js', true);
         $PAGE->requires->js('/mod/teletask/vendor/uuid-js/uuid.js', true);
-        $PAGE->requires->js_init_call('M.mod_teletask.init');
+        $PAGE->requires->js_init_call('M.mod_teletask.init', array('course' => 2));
 
         $mform =& $this->_form;
 

@@ -8,13 +8,13 @@ M.mod_teletask = M.mod_teletask || {};
  *
  * @param {Object} Y YUI instance
  */
-M.mod_teletask.init = function(Y) {
+M.mod_teletask.init = function(Y, course) {
     
 	var uploader = new plupload.Uploader({
 		runtimes : 'html5,flash,silverlight,html4',
 		browse_button : 'pickfiles', // you can pass an id...
 		container: document.getElementById('container'), // ... or DOM Element itself
-		url : '../mod/teletask/upload.php',
+		url : '../mod/teletask/upload.php?id='+course,
 		chunk_size: '200kb',
 		flash_swf_url : '../mod/teletask/upload/Moxie.swf',
 		silverlight_xap_url : '../mod/teletask/upload/Moxie.xap',
