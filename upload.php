@@ -30,20 +30,19 @@
  */
 
 require_once('../../config.php');
+require_once('lib.php');
+require_once($CFG->libdir . '/completionlib.php');
 
 $id = required_param('id', PARAM_INT);
 
-if (!$cm = get_coursemodule_from_id('teletask', $id)) {
-    print_error(get_string('incorrectcoursemoduleid', 'teletask'));
-}
-if (!$course = $DB->get_record('course', array('id' => $cm->course))) {
+if (!$course = $DB->get_record('course', array('id' => $id))) {
     print_error(get_string('misconfigured', 'teletask'));
 }
 
-require_course_login($course, false, $cm);
+require_course_login($course, false);
 
-$context = context_module::instance($cm->id);
-if(has_capability('mod/teletask:addinstance', $context))
+$coursecontext = context_course::instance($course->id);
+if(has_capability('mod/teletask:addinstance', $coursecontext))
 {
 
 
