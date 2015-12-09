@@ -39,12 +39,12 @@ require_once($CFG->dirroot.'/mod/teletask/lib.php');
 class mod_teletask_mod_form extends moodleform_mod {
 
     public function definition() {
-        global $CFG, $DB, $OUTPUT, $PAGE;
+        global $CFG, $DB, $OUTPUT, $PAGE, $COURSE;
 
         $PAGE->requires->jquery();
         $PAGE->requires->js('/mod/teletask/vendor/plupload/plupload.full.min.js', true);
         $PAGE->requires->js('/mod/teletask/vendor/uuid-js/uuid.js', true);
-        $PAGE->requires->js_init_call('M.mod_teletask.init', array('course' => 2));
+        $PAGE->requires->js_init_call('M.mod_teletask.init', array('course' => $COURSE->id));
 
         $mform =& $this->_form;
 
