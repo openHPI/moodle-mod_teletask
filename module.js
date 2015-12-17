@@ -59,7 +59,7 @@ M.mod_teletask.init = function(Y, course) {
 			},
 
 			UploadProgress: function(up, file) {
-				document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span> Uploading ... ' + file.percent + "%</span>";
+				document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span> ' + M.util.get_string('videoisuploading', 'teletask') + ' ' + file.percent + "%</span>";
 			},
 			
 			UploadComplete: function (up, files) {
@@ -74,7 +74,7 @@ M.mod_teletask.init = function(Y, course) {
 					success: function( data ) {
 						var lectureInfo = $.parseJSON(data);
 						//Unzip all files one by one
-						document.getElementById(files[0].id).getElementsByTagName('b')[0].innerHTML = '<span> Extracting ... </span>';
+						document.getElementById(files[0].id).getElementsByTagName('b')[0].innerHTML = '<span> '+ M.util.get_string('videoisextracting', 'teletask') + ' </span>';
 						for (var i = 0, len = lectureInfo.files.length; i < len; i++) {
 							$.ajax({
 								type: 'POST',
@@ -82,7 +82,7 @@ M.mod_teletask.init = function(Y, course) {
 								data: { fn: files[0].name, action: 'unzip', ufn: lectureInfo.files[i] },
 								async: false,
 								success: function( data ) {
-									document.getElementById(files[0].id).getElementsByTagName('b')[0].innerHTML = '<span> Extracting ...' + (i+1) + ' of ' + len + '</span>';
+									document.getElementById(files[0].id).getElementsByTagName('b')[0].innerHTML = '<span> ' + M.util.get_string('videoisextracting', 'teletask') + ' ' + (i+1) + ' '+ M.util.get_string('videoisextractingof', 'teletask') + ' ' + len + '</span>';
 								}
 							});							
 						}
@@ -118,7 +118,7 @@ M.mod_teletask.init = function(Y, course) {
 						//Remove Current Section
 						$( "#video_sections" ).html("");
 						for (var i = 0, len = lectureInfo.sections.length; i < len; i++) {
-							$( "#video_sections" ).append('<div>Section: <input type="text" name="sections[]" value="'+ lectureInfo.sections[i].name +'"> Time (in s): <input type="text" name="sectiontimes[]" value="'+ lectureInfo.sections[i].time +'"> <a class="remove_section" style="cursor: pointer;">remove</a></div>');
+							$( "#video_sections" ).append('<div>'+ M.util.get_string('videosection', 'teletask') + ': <input type="text" name="sections[]" value="'+ lectureInfo.sections[i].name +'"> '+ M.util.get_string('videosectiontime', 'teletask') + ': <input type="text" name="sectiontimes[]" value="'+ lectureInfo.sections[i].time +'"> <a class="remove_section" style="cursor: pointer;">'+ M.util.get_string('videosectionremove', 'teletask') + '</a></div>');
 						}
 						
 						//Visualize Sections
@@ -136,7 +136,7 @@ M.mod_teletask.init = function(Y, course) {
 					success: function( data ) {
 						if(data == "success")
 						{
-							document.getElementById(files[0].id).getElementsByTagName('b')[0].innerHTML = 'Removing srchieve ...';
+							document.getElementById(files[0].id).getElementsByTagName('b')[0].innerHTML = M.util.get_string('videoarchiveisremoving', 'teletask');
 						}
 					}
 				});		
@@ -144,7 +144,7 @@ M.mod_teletask.init = function(Y, course) {
 				//Get Parsed XML Data and prefill fields
 				
 				
-				document.getElementById(files[0].id).getElementsByTagName('b')[0].innerHTML = 'Done';
+				document.getElementById(files[0].id).getElementsByTagName('b')[0].innerHTML = M.util.get_string('videouploadisdone', 'teletask');
 			},
 
 			Error: function(up, err) {
@@ -156,7 +156,7 @@ M.mod_teletask.init = function(Y, course) {
 	uploader.init();
 	
 	$( "#add_section" ).click(function() {
-		$( "#video_sections" ).append('<div>Section: <input type="text" name="sections[]"> Time (in s): <input type="text" name="sectiontimes[]"> <a class="remove_section" style="cursor: pointer;">remove</a></div>');
+		$( "#video_sections" ).append('<div>'+ M.util.get_string('videosection', 'teletask') + ': <input type="text" name="sections[]"> '+ M.util.get_string('videosectiontime', 'teletask') + ': <input type="text" name="sectiontimes[]"> <a class="remove_section" style="cursor: pointer;">'+ M.util.get_string('videosectionremove', 'teletask') + '</a></div>');
 	});
 	$('#video_sections').on('click', '.remove_section', function(e) {
 		$(this).parent().remove();

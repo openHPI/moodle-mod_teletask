@@ -44,16 +44,27 @@ class mod_teletask_mod_form extends moodleform_mod {
         $PAGE->requires->jquery();
         $PAGE->requires->js('/mod/teletask/vendor/plupload/plupload.full.min.js', true);
         $PAGE->requires->js('/mod/teletask/vendor/uuid-js/uuid.js', true);
+
+        // Language requirements for JavaScript
+        $PAGE->requires->strings_for_js(array(
+            'videoisuploading',
+            'videoisextracting',
+            'videoisextractingof',
+            'videosection',
+            'videosectiontime',
+            'videosectionremove',
+            'videoarchiveisremoving',
+            'videouploadisdone',
+            ), 'teletask');
         $PAGE->requires->js_init_call('M.mod_teletask.init', array('course' => $COURSE->id));
 
         $mform =& $this->_form;
 
         if (empty($this->current->id)) {
             $mform->addElement('html',
-                    '<div id="filelist">Your browser doesn\'t have Flash, Silverlight or HTML5 support.'.
-                    ' You can not use the upload functionality.</div><br />'.
-                    '<div id="container"><a id="pickfiles" href="javascript:;">[Select tele-TASK moodle file]</a>'.
-                    '<a id="uploadfiles" href="javascript:;">[Upload file]</a>(optional)</div>');
+                    '<div id="filelist">'.get_string('videouploadrestriction', 'teletask').'</div><br />'.
+                    '<div id="container"><a id="pickfiles" href="javascript:;">['.get_string('videouploadselect', 'teletask').']</a>'.
+                    '<a id="uploadfiles" href="javascript:;">['.get_string('videouploadfile', 'teletask').']</a>(optional)</div>');
         }
 
         $mform->addElement('header', 'general', get_string('general', 'form'));
@@ -92,9 +103,9 @@ class mod_teletask_mod_form extends moodleform_mod {
 
         foreach ($teletasksections as $section) {
             $mform->addElement('html',
-                    '<div>Section: <input type="text" name="sections[]" value="'.
-                    $section->name.'"> Time (in s): <input type="text" name="sectiontimes[]" value="'.
-                    $section->time.'"> <a class="remove_section" style="cursor: pointer;">remove</a></div>');
+                    '<div>'.get_string('videosection', 'teletask').': <input type="text" name="sections[]" value="'.
+                    $section->name.'"> '.get_string('videosectiontime', 'teletask').': <input type="text" name="sectiontimes[]" value="'.
+                    $section->time.'"> <a class="remove_section" style="cursor: pointer;">'.get_string('videosectionremove', 'teletask').'</a></div>');
         }
 
         $mform->addElement('html', '</div>');
