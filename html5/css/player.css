@@ -1,4 +1,4 @@
-@font-face {
+.path-mod-teletask @font-face {
   font-family: 'FontAwesome';
   src: url('../fonts/fontawesome-webfont.eot?#iefix&v=4.0.3') format('embedded-opentype'),
     url('../fonts/fontawesome-webfont.woff?v=4.0.3') format('woff'),
@@ -8,7 +8,7 @@
   font-style: normal;
 }
 
-#content{
+.path-mod-teletask #content{
   /* flexbox*/
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -26,7 +26,7 @@
   box-align: center;
 }
 
-.videoPlayer {
+.path-mod-teletask .videoPlayer {
   overflow:hidden;
   position:relative;
 
@@ -38,27 +38,27 @@
   user-select: none;
 }
 
-.videoPlayerInner {
+.path-mod-teletask .videoPlayerInner {
   width: 100%;
   height: 0;
   padding-bottom: 61.8%;
 }
 
-.televideoplayer .resizeBarContainer {
+.path-mod-teletask .televideoplayer .resizeBarContainer {
 	float: left;
 }
 
-.main {
+.path-mod-teletask .main {
 }
 
-.controlsBox {
+.path-mod-teletask .controlsBox {
   position: absolute;
   bottom: 0px;
   width:100%;
   z-index: 2;
 }
 
-video.slides {
+.path-mod-teletask video.slides {
   -webkit-transform-origin:50% 0%;
   -moz-transform-origin:50% 0%;
   -o-transform-origin:50% 0%;
@@ -66,7 +66,7 @@ video.slides {
   width: 100%;
 }
 
-video.speaker {
+.path-mod-teletask video.speaker {
   -webkit-transform-origin:50% 0%;
   -moz-transform-origin:50% 0%;
   -o-transform-origin:50% 0%;
@@ -74,27 +74,27 @@ video.speaker {
   width: 100%;
 }
 
-.videoContainer.speaker, .videoContainer.slides {
+.path-mod-teletask .videoContainer.speaker, .videoContainer.slides {
   position: relative;
   float: left;
 }
 
-.videoContainer.speaker {
+.path-mod-teletask .videoContainer.speaker {
   width: 38.2%;
 }
 
-.videoContainer.slides {
+.path-mod-teletask .videoContainer.slides {
   width: 61.8%;
 }
 
-.resizeBarContainer {
+.path-mod-teletask .resizeBarContainer {
   display: none;
 }
-.videoPlayer:hover .resizeBarContainer {
+.path-mod-teletask .videoPlayer:hover .resizeBarContainer {
   display: block;
 }
 
-.videoPlayer:hover .aspectRatio {
+.path-mod-teletask .videoPlayer:hover .aspectRatio {
   display: block;
 }
 
@@ -111,11 +111,11 @@ video.speaker {
 }
 */
 
-.videoPlayer:hover .resizer {
+.path-mod-teletask .videoPlayer:hover .resizer {
   display: block;
 }
 
-.resizer{
+.path-mod-teletask .resizer{
   font-family: FontAwesome;
   position: absolute;
   top: 0;
@@ -140,11 +140,11 @@ video.speaker {
 }
 */
 
-.chapterContent.visible {
+.path-mod-teletask .chapterContent.visible {
   margin-right: 0px;
 }
 
-.chapterContent{
+.path-mod-teletask .chapterContent{
   position: absolute;
   height: 450px;
   top: 0px;
@@ -158,11 +158,11 @@ video.speaker {
   transition: margin-right 1s;
 }
 
-.quizContent.visible {
+.path-mod-teletask .quizContent.visible {
   /*margin: 0px;*/
 }
 
-.quizContent{
+.path-mod-teletask .quizContent{
   position: absolute;
   background-color:#555;
   color:white;
@@ -179,27 +179,27 @@ video.speaker {
   transition: margin-left 1s;
 }
 
-.quizContent div:first-child {
+.path-mod-teletask .quizContent div:first-child {
   margin-top: 20px;
 }
 
-.quizContent .answers {
+.path-mod-teletask .quizContent .answers {
   margin: auto;
   width: 300px;
   text-align: left;
   padding-left: 150px;
 }
 
-.quizContent input[type=checkbox]:not(old),
-.quizContent input[type=radio]:not(old){
+.path-mod-teletask .quizContent input[type=checkbox]:not(old),
+.path-mod-teletask .quizContent input[type=radio]:not(old){
   width   : 28px;
   margin  : 0;
   padding : 0;
   opacity : 0;
 }
 
-.quizContent input[type=checkbox]:not(old) + label,
-.quizContent input[type=radio]:not(old) + label{
+.path-mod-teletask .quizContent input[type=checkbox]:not(old) + label,
+.path-mod-teletask .quizContent input[type=radio]:not(old) + label{
   display      : inline-block;
   margin-left  : -28px;
   padding-left : 28px;
@@ -207,29 +207,29 @@ video.speaker {
   line-height  : 24px;
 }
 
-.quizContent input[type=checkbox]:not(old):checked + label{
+.path-mod-teletask .quizContent input[type=checkbox]:not(old):checked + label{
   background-position : 0 -24px;
 }
 
-.quizContent input[type=radio]:not(old):checked + label{
+.path-mod-teletask .quizContent input[type=radio]:not(old):checked + label{
   background-position : 0 -48px;
 }
 
-.quizContent .description{
+.path-mod-teletask .quizContent .description{
   margin-top: 15px;
 }
 
-table.quiz {
+.path-mod-teletask table.quiz {
   font-family: FontAwesome;
   color:white;
 }
 
-input[type=text]
+.path-mod-teletask input[type=text]
 {
   color:#5a6065;
 }
 
-.close-quiz {
+.path-mod-teletask .close-quiz {
   background-color: #5a6065;
   color: white;
   border-radius: 0;
@@ -238,7 +238,7 @@ input[type=text]
   margin: 5px;
 }
 
-.submit-quiz {
+.path-mod-teletask .submit-quiz {
   background-color: #b8510f;
   color: white;
   border-radius: 0;
@@ -247,7 +247,7 @@ input[type=text]
   margin: 5px;
 }
 
-.aspectRatio{
+.path-mod-teletask .aspectRatio{
   position: absolute;
   top: 14px;
   right: 16px;
@@ -263,12 +263,12 @@ input[type=text]
   font-family: "Trebuchet MS", Helvetica, arial;
 }
 
-.aspectRatio:hover {
+.path-mod-teletask .aspectRatio:hover {
   background-color:#444;
 }
 
 /* controls at the bottm of the player*/
-.controls {
+.path-mod-teletask .controls {
   font-family: FontAwesome;
   font-size: 14px;
   background-color: #2F3030;
@@ -278,18 +278,18 @@ input[type=text]
 }
 
 
-.controls .controlsRight {
+.path-mod-teletask .controls .controlsRight {
   float: right;
 }
 
-.controls .controlsRight > * {
+.path-mod-teletask .controls .controlsRight > * {
   display: block;
   float: left;
   margin-left: 10px;
   line-height: 35px;
 }
 
-.controls .button {
+.path-mod-teletask .controls .button {
   font-family: FontAwesome;
   font-size: 18px;
   line-height: 35px;
@@ -301,106 +301,106 @@ input[type=text]
   color: #eee;
 }
 
-.controls .play {
+.path-mod-teletask .controls .play {
   float: left;
 }
 
-.controls .play:before {
+.path-mod-teletask .controls .play:before {
   content: "\f04b";
 }
-.controls .button:hover {
+.path-mod-teletask .controls .button:hover {
   text-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
 }
 
-.controls .pause:before {
+.path-mod-teletask .controls .pause:before {
   content: "\f04c";
 }
 
-.controls .fullscreen:before {
+.path-mod-teletask .controls .fullscreen:before {
   content: "\f065";
 }
 
-.controls .fullscreen.active:before {
+.path-mod-teletask .controls .fullscreen.active:before {
   content: "\f066";
 }
 
-.controls .mute {
+.path-mod-teletask .controls .mute {
   float: left;
 }
 
-.controls .mute:before {
+.path-mod-teletask .controls .mute:before {
   content: "\f028";
 }
 
-.controls .muted:before {
+.path-mod-teletask .controls .muted:before {
   content: "\f026";
 }
 
-.controls .chapter:before {
+.path-mod-teletask .controls .chapter:before {
   content: "\f03a";
   color: #999;
 }
 
-.controls .toggleQuiz:before {
+.path-mod-teletask .controls .toggleQuiz:before {
   content: "\f14a";
   color: #999;
 }
 
-.controls .chapter.active:before {
+.path-mod-teletask .controls .chapter.active:before {
   color: #eee;
 }
 
-.controls .toggleQuiz.active:before {
+.path-mod-teletask .controls .toggleQuiz.active:before {
   color: #eee;
 }
 
-.controls .playbackRate {
+.path-mod-teletask .controls .playbackRate {
   font-size: 14px;
   min-width: 35px;
 }
 
-.controls .sliding {
+.path-mod-teletask .controls .sliding {
   height: 10px;
   margin-top: 3px;
   border: 1px solid #777;
 }
 
-.controls .slider, .controls .buffer {
+.path-mod-teletask .controls .slider, .controls .buffer {
   position: absolute;
   left: 0;
   height: 10px;
   width: 0;
 }
 
-.controls .slider {
+.path-mod-teletask .controls .slider {
   background-color: #DDD;
 }
 
-.controls .buffer {
+.path-mod-teletask .controls .buffer {
   background-color: #777;
 }
 
-.controls .seek {
+.path-mod-teletask .controls .seek {
   position: relative;
 }
 
-.controls .seekers {
+.path-mod-teletask .controls .seekers {
   margin: 6px 310px 0 35px;
 }
 
-.controls .volume {
+.path-mod-teletask .controls .volume {
   float: left;
   width: 40px;
   position: relative;
 }
 
-.controls .volume.sliding {
+.path-mod-teletask .controls .volume.sliding {
   margin-top: 11px;
 }
 
 /* slideViewer */
 
-.slideContainer {
+.path-mod-teletask .slideContainer {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -409,7 +409,7 @@ input[type=text]
   position: relative;
 }
 
-.slideContainer li {
+.path-mod-teletask .slideContainer li {
   margin: 0;
   padding: 0;
   position: absolute;
@@ -420,19 +420,19 @@ input[type=text]
   height: 10px;
 }
 
-.slideContainer li:first-child {
+.path-mod-teletask .slideContainer li:first-child {
   border-left: 0;
 }
 
-.slideContainer li:hover {
+.path-mod-teletask .slideContainer li:hover {
   background-color: #DDD;
 }
 
-.slideContainer li:hover img {
+.path-mod-teletask .slideContainer li:hover img {
   display: block;
 }
 
-.slideContainer li img {
+.path-mod-teletask .slideContainer li img {
   width: 256px;
   height: 192px;
   background-color: #DDD;
@@ -441,46 +441,46 @@ input[type=text]
   display: none;
 }
 
-div.chapters {
+.path-mod-teletask div.chapters {
   border: 5px solid #333;
 }
-div.chapters ol {
+.path-mod-teletask div.chapters ol {
   margin:0px;
   padding:0px;
   list-style-type:none;
   color:white;
 }
-div.chapters ol li {
+.path-mod-teletask div.chapters ol li {
   padding:5px 5px 5px 20px;
   cursor:pointer;
   margin: 0 !important;
 }
-div.chapters ol li:nth-child(even) {
+.path-mod-teletask div.chapters ol li:nth-child(even) {
   background-color:#666;
 }
-div.chapters ol li:nth-child(odd) {
+.path-mod-teletask div.chapters ol li:nth-child(odd) {
   background-color:#555;
 }
-div.chapters ol li.active {
+.path-mod-teletask div.chapters ol li.active {
   position: relative;
 }
-div.chapters ol li.active:before {
+.path-mod-teletask div.chapters ol li.active:before {
   font-family: FontAwesome;
   font-size: 20px;
   content: "\f0da";
   position: absolute;
   left: 5px;
 }
-div.chapters ol li p {
+.path-mod-teletask div.chapters ol li p {
   margin:5px 5px 5px 35px;
 }
-div.chapters ol li p:first-child {
+.path-mod-teletask div.chapters ol li p:first-child {
   font-weight:bold;
   margin-bottom:0px;
 }
 
 /* Aspect Ratio 16x9 */
-video.aspect-ratio-ws {
+.path-mod-teletask video.aspect-ratio-ws {
   -webkit-transform:scaleY(0.75);
   -moz-transform:scaleY(0.75);
   -o-transform:scaleY(0.75);
@@ -489,7 +489,7 @@ video.aspect-ratio-ws {
 }
 
 /* Aspect Ratio 4x3 */
-video.aspect-ratio-fs {
+.path-mod-teletask video.aspect-ratio-fs {
   -webkit-transform:scaleY(1);
   -moz-transform:scaleY(1);
   -o-transform:scaleY(1);
@@ -497,7 +497,7 @@ video.aspect-ratio-fs {
   margin-top:0px;
 }
 
-.videoPlayer div.overlay {
+.path-mod-teletask .videoPlayer div.overlay {
   position: absolute;
   bottom: 45px;
   left: 0;
@@ -505,60 +505,60 @@ video.aspect-ratio-fs {
   color: #fff;
 }
 
-.videoPlayer div.overlay ul {
+.path-mod-teletask .videoPlayer div.overlay ul {
   list-style-type: none;
 }
 
-.videoPlayer .wiki.overlay h4 {
+.path-mod-teletask .videoPlayer .wiki.overlay h4 {
   padding: 5px;
 }
 
-.videoPlayer div.overlay a {
+.path-mod-teletask .videoPlayer div.overlay a {
   color: #fff;
 }
 
-.annotations:before {
+.path-mod-teletask .annotations:before {
   font-family: FontAwesome;
   font-size: 20px;
   content: "\f08e";
   color: #999;
 }
 
-.annotations.active:before {
+.path-mod-teletask .annotations.active:before {
   color: #eee;
 }
 
-.menu {
+.path-mod-teletask .menu {
   display: none !important;
   position: absolute;
   padding-top: 0.2em;
 }
 
-.menu.active {
+.path-mod-teletask .menu.active {
   display: block !important;
   background-color: rgba(26, 26, 26, 0.8);
   bottom: 45px;
 }
 
-.menu_item {
+.path-mod-teletask .menu_item {
   text-align: left !important;
   color: #ACACAC !important;
   margin-left: 0.1em;
 }
 
-.menu_item.active {
+.path-mod-teletask .menu_item.active {
   color: #eee !important;
 }
 
-.overlay {
+.path-mod-teletask .overlay {
   display: none;
 }
 
-.overlay.visible.enabled{
+.path-mod-teletask .overlay.visible.enabled{
   display: block;
 }
 
-.link_icon:before {
+.path-mod-teletask .link_icon:before {
   font-family: FontAwesome;
   font-size: 20px;
   content: "\f08e";
@@ -568,19 +568,19 @@ video.aspect-ratio-fs {
   text-decoration: none;
 }
 
-.videoPlayer .link.overlay {
+.path-mod-teletask .videoPlayer .link.overlay {
   left: 95%;
   background-color: rgba(0,0,0,0);
 }
 
-a.fill-div {
+.path-mod-teletask a.fill-div {
   display: block;
   height: 100%;
   width: 100%;
   text-decoration: none;
 }
 
-#toggleQuestion {
+.path-mod-teletask #toggleQuestion {
   /*margin-top: 50px;
   box-shadow: 0 0 30px black;
   padding:10 15px 0 15px;*/
@@ -595,7 +595,7 @@ a.fill-div {
   z-index: 10;
 }
 
-#cover {
+.path-mod-teletask #cover {
   display: none;
   position: fixed;
   top:    0px;
@@ -606,7 +606,7 @@ a.fill-div {
   z-index: 5;
 }
 
-.videoPlayer .spinner {
+.path-mod-teletask .videoPlayer .spinner {
   display: none;
   position: absolute;
   height: 100%;
@@ -620,14 +620,14 @@ a.fill-div {
   opacity: 0.4;
 }
 
-.videoPlayer .spinner .fa-spinner {
+.path-mod-teletask .videoPlayer .spinner .fa-spinner {
   position: absolute;
   top: 45%;
   left: 45%;
   z-index: 501;
 }
 
-.fa-spin-fast {
+.path-mod-teletask .fa-spin-fast {
   -moz-animation-duration: 1s;
   -webkit-animation-duration: 1s;
   animation-duration: 1s;
