@@ -30,6 +30,7 @@ $string['incorrectcoursemoduleid'] = 'Kurs Modul ID ist falsch';
 $string['intro'] = 'Intro';
 $string['misconfigured'] = 'Kurs ist falsch konfiguriert';
 $string['modulename'] = 'tele-TASK';
+$string['modulename_help'] = 'tele-TASK erlaubt das Abspielen von Videodateien mit einem oder zwei synchronen Video Dateien innerhalb eines moodle Courses. Dabei wird der Import aus einem tele-TASK System unterstützt. Alternativ können auch mp4-Dateien aus unterschiedlichsten Quellen eingebunden werden.';
 $string['modulenameplural'] = 'tele-TASK';
 $string['pluginname'] = 'tele-TASK';
 $string['pluginadministration'] = 'tele-TASK Administration';

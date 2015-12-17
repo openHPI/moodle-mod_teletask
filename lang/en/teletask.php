@@ -30,6 +30,7 @@ $string['incorrectcoursemoduleid'] = 'Course Module ID was incorrect';
 $string['intro'] = 'Intro';
 $string['misconfigured'] = 'course is misconfigured';
 $string['modulename'] = 'tele-TASK';
+$string['modulename_help'] = 'tele-TASK is a moodle plugin which allows video playback of single and dual stream lecture videos in a moodle course. It offers direct integration of the tele-TASK system and supports mp4 videos playback from different sources.';
 $string['modulenameplural'] = 'tele-TASK';
 $string['pluginname'] = 'tele-TASK';
 $string['pluginadministration'] = 'tele-TASK administration';
