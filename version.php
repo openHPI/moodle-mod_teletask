@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2015121702;
+$plugin->version   = 2016010400;
 $plugin->requires  = 2013040500; // Requires Moodle 2.5 or higher.
 $plugin->component = 'mod_teletask';
 $plugin->maturity  = MATURITY_STABLE;
