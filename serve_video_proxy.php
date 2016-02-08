@@ -28,7 +28,7 @@ require_once('../../config.php');
 require_once('lib.php');
 require_once($CFG->libdir . '/completionlib.php');
 
-$teletask_video_dir = $CFG->dataroot.'/mod_teletask/';
+$teletaskvideodir = $CFG->dataroot.'/mod_teletask/';
 
 $id         = required_param('id', PARAM_INT);                          // Course Module ID.
 $action     = optional_param('action', '', PARAM_ALPHA);
@@ -54,11 +54,10 @@ if (!$teletask = $DB->get_record('teletask', array('id' => $cm->instance))) {
     print_error(get_string('incorrectcoursemodule', 'teletask'));
 }
 
-if ($_GET['type'] == 'speaker')
-{
-	$stream = new VideoStream($teletask_video_dir.$teletask->video_url_speaker);
-	$stream->start();
+if ($_GET['type'] == 'speaker') {
+    $stream = new VideoStream($teletaskvideodir.$teletask->video_url_speaker);
+    $stream->start();
 } else if ($_GET['type'] == 'desktop') {
-	$stream = new VideoStream($teletask_video_dir.$teletask->video_url_desktop);
-	$stream->start();
+    $stream = new VideoStream($teletaskvideodir.$teletask->video_url_desktop);
+    $stream->start();
 }

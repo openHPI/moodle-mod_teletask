@@ -45,7 +45,7 @@ class mod_teletask_mod_form extends moodleform_mod {
         $PAGE->requires->js('/mod/teletask/vendor/plupload/plupload.full.min.js', true);
         $PAGE->requires->js('/mod/teletask/vendor/uuid-js/uuid.js', true);
 
-        // Language requirements for JavaScript
+        // Language requirements for JavaScript.
         $PAGE->requires->strings_for_js(array(
             'videoisuploading',
             'videoisextracting',

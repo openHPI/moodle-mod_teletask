@@ -54,14 +54,14 @@ if (!$teletask = $DB->get_record('teletask', array('id' => $cm->instance))) {
 $PAGE->set_title($teletask->name);
 $PAGE->set_heading($course->fullname);
 
-$teletask_video_proxy_script = 'serve_video_proxy.php?id='.$id.'&type=';
+$teletaskvideoproxyscript = 'serve_video_proxy.php?id='.$id.'&type=';
 
 // Handle Video URL ... local or extern.
 if (strpos($teletask->video_url_speaker, '//') === false) {
-    $teletask->video_url_speaker = $teletask_video_proxy_script.'speaker';
+    $teletask->video_url_speaker = $teletaskvideoproxyscript.'speaker';
 }
 if (strpos($teletask->video_url_desktop, '//') === false && !empty($teletask->video_url_desktop)) {
-    $teletask->video_url_desktop = $teletask_video_proxy_script.'desktop';
+    $teletask->video_url_desktop = $teletaskvideoproxyscript.'desktop';
 }
 
 // Handle Sections.
