@@ -42,8 +42,6 @@ class VideoStream
     private function setheader() {
         ob_get_clean();
         @ini_set('error_reporting', E_ALL & ~ E_NOTICE);
-        @apache_setenv('no-gzip', 1);
-        @ini_set('zlib.output_compression', 'Off');
         header("Content-Type: video/mp4");
         header("Expires: ".gmdate('D, d M Y H:i:s', time()+2592000) . ' GMT');
         header("Last-Modified: ".gmdate('D, d M Y H:i:s', @filemtime($this->path)) . ' GMT' );
@@ -80,11 +78,8 @@ class VideoStream
             }
             // Serve only 1MB of a video file to avoid blocking of a stream.
             $this->start = $c_start;
-            if (($this->start + 1000010) < $c_end) {
-                $this->end = $this->start + 1000000;
-            } else {
-                $this->end = $c_end;
-            }
+            $this->end = $c_end;
+
             $length = $this->end - $this->start + 1;
             fseek($this->stream, $this->start);
             header('HTTP/1.1 206 Partial Content');
