@@ -67,7 +67,7 @@ if (has_capability('mod/teletask:addinstance', $coursecontext)) {
     // Uncomment this one to fake upload time.
 
     // Settings.
-    $targetdir = 'uploads';
+    $targetdir = $CFG->dataroot.'/mod_teletask/';
     $cleanuptargetdir = true; // Remove old files.
     $maxfileage = 5 * 3600; // Temp file age in seconds.
 

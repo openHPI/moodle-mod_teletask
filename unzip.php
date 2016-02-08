@@ -22,16 +22,19 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-if (isset($_POST['fn']) && isset($_POST['action']) && is_file('uploads/'.$_POST['fn'])) {
+require_once('../../config.php');
+$teletask_video_dir = $CFG->dataroot.'/mod_teletask/';
+
+if (isset($_POST['fn']) && isset($_POST['action']) && is_file($teletask_video_dir.$_POST['fn'])) {
     if ($_POST['action'] == 'unzip') {
-        if (is_dir(explode(".ttpp", 'uploads/'.$_POST['fn'])[0]) || mkdir(explode(".ttpp", 'uploads/'.$_POST['fn'])[0])) {
-            $filename = 'uploads/'.$_POST['fn'];
+        if (is_dir(explode(".ttpp", $teletask_video_dir.$_POST['fn'])[0]) || mkdir(explode(".ttpp", $teletask_video_dir.$_POST['fn'])[0])) {
+            $filename = $teletask_video_dir.$_POST['fn'];
             $archive = zip_open($filename);
             while ($entry = zip_read($archive)) {
                 if ($_POST['ufn'] == zip_entry_name($entry)) {
                     $size = zip_entry_filesize($entry);
                     $name = zip_entry_name($entry);
-                    $unzipped = fopen(explode(".ttpp", 'uploads/'.$_POST['fn'])[0].'/'.$name, 'wb');
+                    $unzipped = fopen(explode(".ttpp", $teletask_video_dir.$_POST['fn'])[0].'/'.$name, 'wb');
                     while ($size > 0) {
                         $chunksize = ($size > 10240) ? 10240 : $size;
                         $size -= $chunksize;
@@ -49,16 +52,16 @@ if (isset($_POST['fn']) && isset($_POST['action']) && is_file('uploads/'.$_POST[
             echo "You 'uploads' folder have no write access. Contact your moodle administrator!";
         }
     } else if ($_POST['action'] == 'gather') {
-        $filename = 'uploads/'.$_POST['fn'];
+        $filename = $teletask_video_dir.$_POST['fn'];
         $archive = zip_open($filename);
         $outputarray = array();
         while ($entry = zip_read($archive)) {
-            if ((is_dir(explode(".ttpp", 'uploads/'.$_POST['fn'])[0]) ||
-                    mkdir(explode(".ttpp", 'uploads/'.$_POST['fn'])[0])) &&
+            if ((is_dir(explode(".ttpp", $teletask_video_dir.$_POST['fn'])[0]) ||
+                    mkdir(explode(".ttpp", $teletask_video_dir.$_POST['fn'])[0])) &&
                     zip_entry_name($entry) == "Manifest.xml") {
                 $size = zip_entry_filesize($entry);
                 $name = zip_entry_name($entry);
-                $unzipped = fopen(explode(".ttpp", 'uploads/'.$_POST['fn'])[0].'/'.$name, 'wb');
+                $unzipped = fopen(explode(".ttpp", $teletask_video_dir.$_POST['fn'])[0].'/'.$name, 'wb');
                 while ($size > 0) {
                     $chunksize = ($size > 10240) ? 10240 : $size;
                     $size -= $chunksize;
@@ -69,7 +72,7 @@ if (isset($_POST['fn']) && isset($_POST['action']) && is_file('uploads/'.$_POST[
                 }
                 fclose($unzipped);
 
-                $xml = simplexml_load_file(explode(".ttpp", 'uploads/'.$_POST['fn'])[0].'/'.$name);
+                $xml = simplexml_load_file(explode(".ttpp", $teletask_video_dir.$_POST['fn'])[0].'/'.$name);
 
                 $outputarray["lectureName"] = (string) $xml->Name;
                 $outputarray["lectureDescription"] = (string) $xml->Description;
@@ -103,11 +106,11 @@ if (isset($_POST['fn']) && isset($_POST['action']) && is_file('uploads/'.$_POST[
         }
         // Remove uploaded file if nothing is found to unpack.
         if (count($outputarray) == 0) {
-            unlink('uploads/'.$_POST['fn']);
+            unlink($teletask_video_dir.$_POST['fn']);
         }
         echo json_encode($outputarray);
     } else if ($_POST['action'] == 'remove') {
-        if (unlink('uploads/'.$_POST['fn'])) {
+        if (unlink($teletask_video_dir.$_POST['fn'])) {
             echo 'success';
         } else {
             echo 'fail';
