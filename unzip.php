@@ -23,99 +23,124 @@
  */
 
 require_once('../../config.php');
-$teletaskvideodir = $CFG->dataroot.'/mod_teletask/';
+require_once('lib.php');
+require_once($CFG->libdir . '/completionlib.php');
 
-if (isset($_POST['fn']) && isset($_POST['action']) && is_file($teletaskvideodir.$_POST['fn'])) {
-    if ($_POST['action'] == 'unzip') {
-        if (is_dir(explode(".ttpp", $teletaskvideodir.$_POST['fn'])[0]) || mkdir(explode(".ttpp", $teletaskvideodir.$_POST['fn'])[0])) {
-            $filename = $teletaskvideodir.$_POST['fn'];
-            $archive = zip_open($filename);
-            while ($entry = zip_read($archive)) {
-                if ($_POST['ufn'] == zip_entry_name($entry)) {
-                    $size = zip_entry_filesize($entry);
-                    $name = zip_entry_name($entry);
-                    $unzipped = fopen(explode(".ttpp", $teletaskvideodir.$_POST['fn'])[0].'/'.$name, 'wb');
-                    while ($size > 0) {
-                        $chunksize = ($size > 10240) ? 10240 : $size;
-                        $size -= $chunksize;
-                        $chunk = zip_entry_read($entry, $chunksize);
-                        if ($chunk !== false) {
-                            fwrite($unzipped, $chunk);
-                        }
-                    }
-                    fclose($unzipped);
-                    echo 'File: ' . $name . ' unzipped!';
-                }
-            }
-        } else {
-            // Error no write access.
-            echo "You 'uploads' folder have no write access. Contact your moodle administrator!";
-        }
-    } else if ($_POST['action'] == 'gather') {
-        $filename = $teletaskvideodir.$_POST['fn'];
-        $archive = zip_open($filename);
-        $outputarray = array();
-        while ($entry = zip_read($archive)) {
-            if ((is_dir(explode(".ttpp", $teletaskvideodir.$_POST['fn'])[0]) ||
-                    mkdir(explode(".ttpp", $teletaskvideodir.$_POST['fn'])[0])) &&
-                    zip_entry_name($entry) == "Manifest.xml") {
-                $size = zip_entry_filesize($entry);
-                $name = zip_entry_name($entry);
-                $unzipped = fopen(explode(".ttpp", $teletaskvideodir.$_POST['fn'])[0].'/'.$name, 'wb');
-                while ($size > 0) {
-                    $chunksize = ($size > 10240) ? 10240 : $size;
-                    $size -= $chunksize;
-                    $chunk = zip_entry_read($entry, $chunksize);
-                    if ($chunk !== false) {
-                        fwrite($unzipped, $chunk);
-                    }
-                }
-                fclose($unzipped);
+$id = required_param('id', PARAM_INT);
+$fn = required_param('fn', PARAM_NOTAGS);
 
-                $xml = simplexml_load_file(explode(".ttpp", $teletaskvideodir.$_POST['fn'])[0].'/'.$name);
+if (!$course = $DB->get_record('course', array('id' => $id))) {
+    print_error(get_string('misconfigured', 'teletask'));
+}
 
-                $outputarray["lectureName"] = (string) $xml->Name;
-                $outputarray["lectureDescription"] = (string) $xml->Description;
-                $outputarray["lectureSpeaker"] = '';
-                foreach ($xml->Speakers->Speaker as $speaker) {
-                    if ($outputarray["lectureSpeaker"] == '') {
-                        $outputarray["lectureSpeaker"] .= (string) $speaker->Name;
-                    } else {
-                        $outputarray["lectureSpeaker"] .= ', ' . $speaker->Name;
-                    }
-                }
-                $outputarray["lectureYear"] = date("Y", strtotime($xml->DateTime));
-                $outputarray["lectureMonth"] = date("n", strtotime($xml->DateTime));
-                $outputarray["lectureDay"] = date("d", strtotime($xml->DateTime));
-                $outputarray["files"] = array();
+require_course_login($course, false);
 
-                foreach ($xml->FileAssets->FileAsset as $file) {
-                    if ($file->IsEmbedded == 'true') {
-                        array_push($outputarray["files"], (string) $file->Path);
-                    }
-                }
+$coursecontext = context_course::instance($course->id);
+if (has_capability('mod/teletask:addinstance', $coursecontext)) {
 
-                $outputarray["sections"] = array();
+	$teletaskvideodir = $CFG->dataroot.'/mod_teletask/';
+	
+	// Normalize file name to avoid directory traversal attacks.
+    // Always strip any paths.
+    $fileinfo = pathinfo($fn);
+    $strippedfilename = $fileinfo['basename'];
 
-                foreach ($xml->Chapters->Chapter as $chapter) {
-                    $chapterarray["name"] = (string) $chapter->Description;
-                    $chapterarray["time"] = (string) round($chapter->Time / 1000);
-                    array_push($outputarray["sections"], $chapterarray);
-                }
-            }
-        }
-        // Remove uploaded file if nothing is found to unpack.
-        if (count($outputarray) == 0) {
-            unlink($teletaskvideodir.$_POST['fn']);
-        }
-        echo json_encode($outputarray);
-    } else if ($_POST['action'] == 'remove') {
-        if (unlink($teletaskvideodir.$_POST['fn'])) {
-            echo 'success';
-        } else {
-            echo 'fail';
-        }
-    }
-} else {
-    die('File not found');
+	if (isset($_POST['action']) && is_file($teletaskvideodir.$strippedfilename)) {
+		if ($_POST['action'] == 'unzip') {
+			if (is_dir(explode(".ttpp", $teletaskvideodir.$strippedfilename)[0]) || mkdir(explode(".ttpp", $teletaskvideodir.$strippedfilename)[0])) {
+				$filename = $teletaskvideodir.$strippedfilename;
+				$archive = zip_open($filename);
+				while ($entry = zip_read($archive)) {
+					if ($_POST['ufn'] == zip_entry_name($entry)) {
+						$size = zip_entry_filesize($entry);
+						$name = zip_entry_name($entry);
+						$unzipped = fopen(explode(".ttpp", $teletaskvideodir.$strippedfilename)[0].'/'.$name, 'wb');
+						while ($size > 0) {
+							$chunksize = ($size > 10240) ? 10240 : $size;
+							$size -= $chunksize;
+							$chunk = zip_entry_read($entry, $chunksize);
+							if ($chunk !== false) {
+								fwrite($unzipped, $chunk);
+							}
+						}
+						fclose($unzipped);
+						echo 'File: ' . $name . ' unzipped!';
+					}
+				}
+			} else {
+				// Error no write access.
+				echo "You 'uploads' folder have no write access. Contact your moodle administrator!";
+			}
+		} else if ($_POST['action'] == 'gather') {
+			$filename = $teletaskvideodir.$strippedfilename;
+			$archive = zip_open($filename);
+			$outputarray = array();
+			while ($entry = zip_read($archive)) {
+				if ((is_dir(explode(".ttpp", $teletaskvideodir.$strippedfilename)[0]) ||
+						mkdir(explode(".ttpp", $teletaskvideodir.$strippedfilename)[0])) &&
+						zip_entry_name($entry) == "Manifest.xml") {
+					$size = zip_entry_filesize($entry);
+					$name = zip_entry_name($entry);
+					$unzipped = fopen(explode(".ttpp", $teletaskvideodir.$strippedfilename)[0].'/'.$name, 'wb');
+					while ($size > 0) {
+						$chunksize = ($size > 10240) ? 10240 : $size;
+						$size -= $chunksize;
+						$chunk = zip_entry_read($entry, $chunksize);
+						if ($chunk !== false) {
+							fwrite($unzipped, $chunk);
+						}
+					}
+					fclose($unzipped);
+
+					$xml = simplexml_load_file(explode(".ttpp", $teletaskvideodir.$strippedfilename)[0].'/'.$name);
+
+					$outputarray["lectureName"] = (string) $xml->Name;
+					$outputarray["lectureDescription"] = (string) $xml->Description;
+					$outputarray["lectureSpeaker"] = '';
+					foreach ($xml->Speakers->Speaker as $speaker) {
+						if ($outputarray["lectureSpeaker"] == '') {
+							$outputarray["lectureSpeaker"] .= (string) $speaker->Name;
+						} else {
+							$outputarray["lectureSpeaker"] .= ', ' . $speaker->Name;
+						}
+					}
+					$outputarray["lectureYear"] = date("Y", strtotime($xml->DateTime));
+					$outputarray["lectureMonth"] = date("n", strtotime($xml->DateTime));
+					$outputarray["lectureDay"] = date("d", strtotime($xml->DateTime));
+					$outputarray["files"] = array();
+
+					foreach ($xml->FileAssets->FileAsset as $file) {
+						if ($file->IsEmbedded == 'true') {
+							array_push($outputarray["files"], (string) $file->Path);
+						}
+					}
+
+					$outputarray["sections"] = array();
+
+					foreach ($xml->Chapters->Chapter as $chapter) {
+						$chapterarray["name"] = (string) $chapter->Description;
+						$chapterarray["time"] = (string) round($chapter->Time / 1000);
+						array_push($outputarray["sections"], $chapterarray);
+					}
+				}
+			}
+			// Remove uploaded file if nothing is found to unpack.
+			if (count($outputarray) == 0) {
+				if (strpos($strippedfilename, '.ttpp')){
+					unlink($teletaskvideodir.$strippedfilename);
+				}
+			}
+			echo json_encode($outputarray);
+		} else if ($_POST['action'] == 'remove') {
+			if (strpos($strippedfilename, '.ttpp')) {
+				if (unlink($teletaskvideodir.$strippedfilename)) {
+					echo 'success';
+				} else {
+					echo 'fail';
+				}
+			}
+		}
+	} else {
+		die('File not found');
+	}
 }

@@ -68,7 +68,7 @@ M.mod_teletask.init = function(Y, course) {
 				//Gather containing files
 				$.ajax({
 					type: 'POST',
-					url: "../mod/teletask/unzip.php",
+					url: '../mod/teletask/unzip.php?id='+course,
 					data: { fn: files[0].name, action: 'gather' },
 					async: false,
 					success: function( data ) {
@@ -78,7 +78,7 @@ M.mod_teletask.init = function(Y, course) {
 						for (var i = 0, len = lectureInfo.files.length; i < len; i++) {
 							$.ajax({
 								type: 'POST',
-								url: "../mod/teletask/unzip.php", 
+								url: '../mod/teletask/unzip.php?id='+course, 
 								data: { fn: files[0].name, action: 'unzip', ufn: lectureInfo.files[i] },
 								async: false,
 								success: function( data ) {
@@ -130,7 +130,7 @@ M.mod_teletask.init = function(Y, course) {
 				//Remove archive
 				$.ajax({
 					type: 'POST',
-					url: "../mod/teletask/unzip.php", 
+					url: '../mod/teletask/unzip.php?id='+course, 
 					data: { fn: files[0].name, action: 'remove' },
 					async: false,
 					success: function( data ) {
