@@ -27,7 +27,7 @@ require_once('lib.php');
 require_once($CFG->libdir . '/completionlib.php');
 
 $id = required_param('id', PARAM_INT);
-$fn = required_param('fn', PARAM_NOTAGS);
+$fn = required_param('fn', PARAM_FILE);
 
 if (!$course = $DB->get_record('course', array('id' => $id))) {
     print_error(get_string('misconfigured', 'teletask'));
@@ -40,21 +40,16 @@ if (has_capability('mod/teletask:addinstance', $coursecontext)) {
 
     $teletaskvideodir = $CFG->dataroot.'/mod_teletask/';
 
-    // Normalize file name to avoid directory traversal attacks.
-    // Always strip any paths.
-    $fileinfo = pathinfo($fn);
-    $strippedfilename = $fileinfo['basename'];
-
-    if (isset($_POST['action']) && is_file($teletaskvideodir.$strippedfilename)) {
+    if (isset($_POST['action']) && is_file($teletaskvideodir.$fn)) {
         if ($_POST['action'] == 'unzip') {
-            if (is_dir(explode(".ttpp", $teletaskvideodir.$strippedfilename)[0]) || mkdir(explode(".ttpp", $teletaskvideodir.$strippedfilename)[0])) {
-                $filename = $teletaskvideodir.$strippedfilename;
+            if (is_dir(explode(".ttpp", $teletaskvideodir.$fn)[0]) || mkdir(explode(".ttpp", $teletaskvideodir.$fn)[0])) {
+                $filename = $teletaskvideodir.$fn;
                 $archive = zip_open($filename);
                 while ($entry = zip_read($archive)) {
                     if ($_POST['ufn'] == zip_entry_name($entry)) {
                         $size = zip_entry_filesize($entry);
                         $name = zip_entry_name($entry);
-                        $unzipped = fopen(explode(".ttpp", $teletaskvideodir.$strippedfilename)[0].'/'.$name, 'wb');
+                        $unzipped = fopen(explode(".ttpp", $teletaskvideodir.$fn)[0].'/'.$name, 'wb');
                         while ($size > 0) {
                             $chunksize = ($size > 10240) ? 10240 : $size;
                             $size -= $chunksize;
@@ -72,16 +67,16 @@ if (has_capability('mod/teletask:addinstance', $coursecontext)) {
                 echo "You 'uploads' folder have no write access. Contact your moodle administrator!";
             }
         } else if ($_POST['action'] == 'gather') {
-            $filename = $teletaskvideodir.$strippedfilename;
+            $filename = $teletaskvideodir.$fn;
             $archive = zip_open($filename);
             $outputarray = array();
             while ($entry = zip_read($archive)) {
-                if ((is_dir(explode(".ttpp", $teletaskvideodir.$strippedfilename)[0]) ||
-                        mkdir(explode(".ttpp", $teletaskvideodir.$strippedfilename)[0])) &&
+                if ((is_dir(explode(".ttpp", $teletaskvideodir.$fn)[0]) ||
+                        mkdir(explode(".ttpp", $teletaskvideodir.$fn)[0])) &&
                         zip_entry_name($entry) == "Manifest.xml") {
                     $size = zip_entry_filesize($entry);
                     $name = zip_entry_name($entry);
-                    $unzipped = fopen(explode(".ttpp", $teletaskvideodir.$strippedfilename)[0].'/'.$name, 'wb');
+                    $unzipped = fopen(explode(".ttpp", $teletaskvideodir.$fn)[0].'/'.$name, 'wb');
                     while ($size > 0) {
                         $chunksize = ($size > 10240) ? 10240 : $size;
                         $size -= $chunksize;
@@ -92,7 +87,7 @@ if (has_capability('mod/teletask:addinstance', $coursecontext)) {
                     }
                     fclose($unzipped);
 
-                    $xml = simplexml_load_file(explode(".ttpp", $teletaskvideodir.$strippedfilename)[0].'/'.$name);
+                    $xml = simplexml_load_file(explode(".ttpp", $teletaskvideodir.$fn)[0].'/'.$name);
 
                     $outputarray["lectureName"] = (string) $xml->Name;
                     $outputarray["lectureDescription"] = (string) $xml->Description;
@@ -126,14 +121,14 @@ if (has_capability('mod/teletask:addinstance', $coursecontext)) {
             }
             // Remove uploaded file if nothing is found to unpack.
             if (count($outputarray) == 0) {
-                if (strpos($strippedfilename, '.ttpp')) {
-                    unlink($teletaskvideodir.$strippedfilename);
+                if (strpos($fn, '.ttpp')) {
+                    unlink($teletaskvideodir.$fn);
                 }
             }
             echo json_encode($outputarray);
         } else if ($_POST['action'] == 'remove') {
-            if (strpos($strippedfilename, '.ttpp')) {
-                if (unlink($teletaskvideodir.$strippedfilename)) {
+            if (strpos($fn, '.ttpp')) {
+                if (unlink($teletaskvideodir.$fn)) {
                     echo 'success';
                 } else {
                     echo 'fail';
